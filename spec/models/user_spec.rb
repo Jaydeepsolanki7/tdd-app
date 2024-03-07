@@ -1,24 +1,25 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  it "should vaild with valid attribute" do
-    user = User.new(name: "Jaydeep", email: "jay.solanki@gmail.com", address: "Indore(M.P)")
+  let(:user) { create(:user) }
+
+  it "should be valid with valid attributes" do
     expect(user).to be_valid
   end
 
-  it "should not vaild without name" do
-    user = User.new(email: "jay.solanki@gmail.com", address: "Indore(M.P)")
+  it "should not be valid without name" do
+    user.name = nil
     expect(user).not_to be_valid
   end
 
-  it "should not valid without an email" do
-    user = User.new(name: "Jaydeep")
+  it "should not be valid without an email" do
+    user.email = nil
     expect(user).not_to be_valid
   end
 
-  it "should have unique email address" do
-    User.create(name:"Jaydeep", email: "jay.solanki@gmailcom")
-    user = User.new(name:"Jay", email: "jay.solanki@gmailcom")
+  it "should have a unique email address" do
+    existing_user = create(:user, email: "jay.solanki@gmail.com")
+    user.email = existing_user.email
     expect(user).not_to be_valid
   end
 end
